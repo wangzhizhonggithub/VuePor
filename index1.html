@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+        
+        #app {
+            width: 600px;
+            margin: 10px auto;
+        }
+        
+        .tb {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+        .tb th {
+            background-color: #0094ff;
+            color: white;
+        }
+        
+        .tb td,
+        .tb th {
+            padding: 5px;
+            border: 1px solid black;
+            text-align: center;
+        }
+        
+        .add {
+            padding: 5px;
+            border: 1px solid black;
+            margin-bottom: 10px;
+        }
+        
+        #del {
+            position: absolute;
+            top: 45%;
+            border: 1px solid rgba(0, 0, 0, .2);
+            width: 300px;
+            height: 120px;
+            left: 30%;
+            transition: all .2s;
+        }
+        
+        #del li {
+            list-style: none;
+            padding: 5px;
+        }
+    </style>
+    <script src="./js/vue.js"></script>
+</head>
+
+<body>
+    <div id="app" v-cloak>
+        <!-- 新增区 -->
+        <div class="add">
+            编号:
+            <input type="text" v-model="id" id="id" v-focus v-color="mycolor"> 品牌名称:
+            <input type="text" v-model="name">
+            <input type="button" value="添加" @click="addData">
+        </div>
+        <!-- 搜索条件去 -->
+        <div class="add">
+            品牌名称:
+            <input type="text" placeholder="请输入搜索条件" v-model="searchvalue">
+        </div>
+        <!-- 列表区  -->
+        <div>
+            <table class="tb">
+                <!-- 表头 -->
+                <tr>
+                    <th>编号</th>
+                    <th>品牌名称</th>
+                    <th>创立时间</th>
+                    <th>操作</th>
+                </tr>
+                <!-- 当没有数据的时候应该显示给用户，当有数据的时候，隐藏  -->
+                <tr v-if="newlist.length<=0">
+                    <td colspan="4">没有品牌数据</td>
+                </tr>
+                <!-- 动态生成内容tr -->
+                <tr v-for="(item,index) in newlist" :key="index">
+                    <td>{{item.id}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.ctime | datefmt('/') }} {{item.ctime | datefmt('-') }}
+                    </td>
+                    <td>
+                        <a href="javascript:void(0);" @click="del(item.id)">删除</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- 功能操作区 -->
+        <transition @before-enter="bEnter" @enter="enter" @after-enter="aEnter" @before-leave="bLeave" @leave="leave" @after-leave="aLeave">
+            <div id="del" v-show="isShow">
+                <ul>
+                    <li>确定要删除该品牌？</li>
+                    <li>
+                        <button @click="yesDel(currendId)">确定</button>
+                        <button @click="noDel">取消</button>
+                    </li>
+                </ul>
+            </div>
+        </transition>
+    </div>
+
+</body>
+<script>
+    /**
+     *总结: 
+     *1、定义指令的时候，名称不需要加v-，但是使用的时候一定要加上v-
+     */
+    // 自定义指令v-focus的格式：
+    Vue.directive('focus', {
+        inserted: function(el, binding) {
+            // el:哪个dom元素使用了v-focus，那么此el就是当前的dom对象
+            el.focus();
+            // console.log(el);
+        }
+    });
+
+    // 自定义v-color的指令
+    Vue.directive('color', {
+        inserted: function(el, binding) {
+            // inserted 函数中的逻辑代码是不固定的，而是要根据具体的业务需求去考程序员实现的
+            // console.log(binding);
+            /*
+            binding:{
+                expression: 在使用v-color=“mycolor”的时候后面指定的表达式 （mycolor），
+                 value: 取当前表达式的值（green）
+                }
+            */
+            el.style.color = binding.value;
+        }
+    });
+
+
+    new Vue({
+        el: '#app',
+        data: {
+            currendId: 0,
+            isShow: false,
+            searchvalue: '',
+            mycolor: 'green',
+            id: 0,
+            name: '',
+            list: [{
+                id: 1,
+                name: '宝马',
+                ctime: Date()
+            }, {
+                id: 2,
+                name: '奔驰',
+                ctime: Date()
+            }]
+        },
+        computed: {
+            newlist: function() {
+                // return this.list;
+                var _this = this;
+                return this.list.filter(function(item) {
+                    return item.name.indexOf(_this.searchvalue) != -1;
+                });
+            }
+        },
+        filters: {
+            datefmt: function(input, splitchar) {
+                var date = new Date(input);
+                var y = date.getFullYear();
+                var m = date.getMonth() + 1;
+                var day = date.getDate();
+
+                return y + splitchar + m + splitchar + day;
+            }
+        },
+        methods: {
+            // 新增方法
+            addData: function() {
+                // 1.0 往list中push一个对象
+                this.list.push({
+                    id: this.id,
+                    name: this.name,
+                    ctime: Date()
+                });
+                // 当list中的数据发生了改变，就会自动触发v-for的重新执行而自动更新视图
+
+                // 2.0 重置id和name的值
+                this.id = 0;
+                this.name = '';
+            },
+            del: function(id) {
+                // 显示功能区
+                this.isShow = true;
+                this.currendId = id;
+
+            },
+            bEnter: function(el) {
+                // 动画出现的位置
+                el.style.left = "60%";
+            },
+            enter: function(el, done) {
+                // 记录帧
+                el.offsetWidth;
+                el.style.left = "35%";
+                // 执行下个事件
+                done();
+            },
+            aEnter: function(el) {
+
+            },
+            bLeave: function(el) {
+                // 消失的初始位置
+                el.style.left = "35%";
+            },
+            leave: function(el, done) {
+                // 记录帧
+                el.offsetWidth;
+                // 消失的结束位置
+                el.style.left = "60%";
+                setTimeout(function() {
+                    done();
+                }, 270);
+            },
+            aLeave: function(el) {},
+            yesDel: function(id) {
+                // 实现删除逻辑
+                // 通过findIndex查找到要删除数据对象的索引
+                var index = this.list.findIndex(function(item) {
+                    return item.id == id;
+                });
+                // 通过splice()删除数据,自动触发v-for的重新生成
+                this.list.splice(index, 1);
+                // 将功能区重新隐藏
+                this.isShow = false;
+            },
+            noDel: function() {
+                // 将功能区重新隐藏
+                this.isShow = false;
+            }
+        }
+    })
+</script>
+
+</html>
