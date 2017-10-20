@@ -1,6 +1,6 @@
 <template>
 <div class="tmpl">
-
+    layout
 </div>
 </template>
 

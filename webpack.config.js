@@ -1,9 +1,10 @@
 // 导入包
-import path from "path";
+var path = require("path");
+// import path from 'path';
 
 // 导入html-webpack-plugin包，获得到插件对象,实现浏览器实时刷新功能
-import htmlwp from "html-webpack-plugin";
-
+var htmlwp = require("html-webpack-plugin");
+// import htmlwp from 'html-webpack-plugin';
 
 // 配置默认文件
 module.exports = {
@@ -12,7 +13,7 @@ module.exports = {
     // 配置打包时生成的文件
     output: {
         // path.join():将多个路径拼接成一个路径
-        path: path.join(__dirname, './dist'),
+        path: path.join(__dirname, '/dist'),
         filename: 'build.js'
     },
     // 配置相关的loader
@@ -31,13 +32,12 @@ module.exports = {
             // 兼容webpack1.0,exclude:排除文件
             { test: /\.js$/, loader: ['babel-loader'], exclude: /node_modules/ }
         ]
-    }
+    },
+    plugins: [
+        new htmlwp({
+            title: '首页', //生成的页面标题
+            filename: 'index.html', //生成的页面文件名
+            template: 'index.html' //模板的文件名
+        })
+    ]
 }
-
-plugins: [
-    new hwp({
-        title: '首页', //生成的页面标题
-        filename: 'index.html', //生成的页面文件名
-        template: 'index1.html' //模板的文件名
-    })
-]

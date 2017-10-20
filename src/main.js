@@ -1,14 +1,13 @@
 // 导入vue
 import Vue from 'vue';
+// 导入路由插件
+import vueRouter from 'vue-router';
 
 // 导入Add组件
 import App from './App.vue';
 
-// 导入路由插件
-import vueRouter from 'vue-router';
 
-// 将vueRouter与vue绑定起来
-Vue.use(vueRouter);
+
 
 // 导入login.vue组件对象
 import login from './components/admin/account/login.vue';
@@ -30,11 +29,15 @@ var router = new vueRouter({
             component: layout,
             // layout的子路由
             children: [
-                { name: 'goodslist', path: 'goodlist', component: goodslist }
+                { name: 'goodslist', path: '/goodslist', component: goodslist }
             ]
         }
     ]
 });
+
+// 将vueRouter与vue绑定起来
+Vue.use(vueRouter);
+
 
 // 导入axios包
 import axios from 'axios';
@@ -49,8 +52,6 @@ Vue.use(axios);
 // 导入elementUI框架
 import elementUI from 'element-ui';
 
-// 将elementui绑定至vue中
-Vue.use(elementUI);
 
 // 导入elementui原型的css样式
 // import 'element-ui/lib/theme-default/index.css';
@@ -59,6 +60,9 @@ Vue.use(elementUI);
 import '../statics/theme_rms/index.css';
 // 导入此项目的全局样式,需在导入elementui样式之后再导入
 import '../statics/css/site.css';
+
+// 将elementui绑定至vue中
+Vue.use(elementUI);
 
 // 创建vue对象
 new Vue({
