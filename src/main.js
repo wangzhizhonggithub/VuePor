@@ -42,7 +42,7 @@ Vue.use(vueRouter);
 // 导入axios包
 import axios from 'axios';
 // 设定axios的基本的url请求前缀
-axios.defaults.baseURL = "http://157.122.54.189:9095";
+   axios.defaults.baseURL = "http://157.122.54.189:9095";
 // 将axios对象挂载到vue的原型属性$http上
 Vue.prototype.$http = axios;
 

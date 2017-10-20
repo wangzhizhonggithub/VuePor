@@ -1,8 +1,6 @@
 <template>
   <div class="tmpl">
   
-    jhkhkh {{name}}
-  
     <!--使用占位符 -->
   
     <router-view></router-view>

@@ -3532,6 +3532,7 @@
 }
 .el-menu-item * {
     vertical-align: middle;
+    color: #fff;
 }
 .el-menu-item:first-child {
     margin-left: 0;
@@ -4771,6 +4772,7 @@
 }
 .el-radio-button:first-child:last-child .el-radio-button__inner {
     border-radius: 4px;
+    margin: 3px;;
 }
 .el-radio-button__inner {
     display: inline-block;
