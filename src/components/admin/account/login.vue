@@ -1,18 +1,17 @@
-  <template>
+<template>
   <div class="tmpl">
     this is login
   </div>
-  </template>
+</template>
 
-  <script>
+<script>
   export default {
-  data() {
-  return{
+    data() {
+      return {}
+    },
+    methods: {}
   }
-  },
-  methods:{
-  }
-  }
-  </script>
-  <style scoped>
-  </style>
+</script>
+<style scoped>
+
+</style>

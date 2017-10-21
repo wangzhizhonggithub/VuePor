@@ -1,11 +1,9 @@
 <template>
 	<div class="tmpl">
-
 		<!-- 侧边栏 -->
 		<el-col :span="leftcol">
 			<div class="layout menu">
 				<img src="../../../statics/imgs/logo.png" alt="">
-
 				<el-menu default-active="5-1" class="el-menu-vertical-demo" :collapse="isCollapse">
 					<el-submenu index="1">
 						<template slot="title">
@@ -58,10 +56,13 @@
 						</template>
 						<el-menu-item-group>
 							<el-menu-item index="5-1">
-								<router-link to="goodslist">内容管理</router-link>
+								<router-link to="goodslist">内容管理(一)</router-link>
 							</el-menu-item>
-							<el-menu-item index="5-2">类别管理</el-menu-item>
-							<el-menu-item index="5-3">评论管理</el-menu-item>
+							<el-menu-item index="5-2">
+								<router-link to="goodslist02">内容管理(二)</router-link>					
+							</el-menu-item>
+							<el-menu-item index="5-3">类别管理</el-menu-item>
+							<el-menu-item index="5-4">评论管理</el-menu-item>
 						</el-menu-item-group>						
 					</el-submenu>
 					<el-submenu index="6">
@@ -75,13 +76,9 @@
 							<el-menu-item index="6-3">评论管理</el-menu-item>
 						</el-menu-item-group>						
 					</el-submenu>
-						
-					
 				</el-menu>
-
 			</div>
 		</el-col>
-
 		<el-col :span="rightcol">
 			<!-- 顶部功能栏 -->
 			<el-row>
@@ -144,7 +141,7 @@
 	color: #686f7f;
 }
 .layout{
-	height: 649px;
+	height: 648px;
 }
 .el-row{
 	background: #fff;
